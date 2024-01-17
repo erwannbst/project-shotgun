@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon --exec 'ts-node-esm' src/app.ts "
+    "dev": "nodemon src/app.ts"
   },
   "keywords": [],
   "dependencies": {
