@@ -3,8 +3,21 @@ export type User = {
   pseudo: string
 }
 
-export type Shotgun = {
+export type Project = {
   id: string
   name: string
+  candidates: Candidate[]
+}
+
+export type Candidate = {
+  user: User
+  timestamp: number
+}
+
+export type Shotgun = {
+  id: string
+  author: User
+  name: string
   users: User[]
+  projects: Project[]
 }

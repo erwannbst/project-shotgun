@@ -10,6 +10,7 @@ const corsOptions = {
 }
 const app = express()
 app.use(cors(corsOptions))
+app.use(express.json())
 const port = 3001
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -26,10 +27,15 @@ io.on('connection', (socket) => {
   })
 
   // handle shotgun creation
-  socket.on('create shotgun', ({ pseudo }) => {
+  socket.on('create shotgun', ({ pseudo, name }) => {
     const shotgun: Shotgun = {
-      name: pseudo + "'s shotgun",
+      name,
       id: generateRoomId(),
+      author: {
+        id: socket.id,
+        pseudo,
+      },
+      projects: [],
       users: [
         {
           id: socket.id,
@@ -73,4 +79,22 @@ app.get('/shotgun/:id', (req: Request, res: Response) => {
     return
   }
   res.send(shotgun)
+})
+
+// add project to shotgun
+app.post('/shotguns/:id/projects', (req: Request, res: Response) => {
+  console.log('add project to shotgun: ' + req.params.id)
+  const shotgun = shotguns.find((shotgun) => shotgun.id === req.params.id)
+  if (!shotgun) {
+    res.status(404).send('Shotgun not found')
+    return
+  }
+  const project = {
+    id: generateRoomId(),
+    name: req.body.name,
+    candidates: [],
+  }
+  shotgun.projects.push(project)
+  io.to(shotgun.id).emit('projects', shotgun.projects)
+  res.send(project)
 })

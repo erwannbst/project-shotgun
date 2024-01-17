@@ -8,11 +8,12 @@ export default function Home() {
   const { socket } = useSocket()
   const [pseudo, setPseudo] = useState('Pseuudo')
   const [code, setCode] = useState('ABCDEF')
+  const [shotgunName, setShotgunName] = useState('Projet recherche')
 
   if (!socket) return <h1>Chargement...</h1>
 
   const createShotgun = () => {
-    socket.emit('create shotgun', { pseudo })
+    socket.emit('create shotgun', { pseudo, name: shotgunName })
   }
 
   return (
@@ -28,6 +29,13 @@ export default function Home() {
             aria-label="pseudo"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
+          />
+          <Input
+            type="text"
+            placeholder="Projet recherche"
+            aria-label="shotgun-name"
+            value={shotgunName}
+            onChange={(e) => setShotgunName(e.target.value)}
           />
           <Button
             onClick={() => {

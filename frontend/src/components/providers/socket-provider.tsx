@@ -32,6 +32,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socket.on('disconnect', () => {
       setIsConnected(false)
+      router.push('/')
     })
 
     socket.on('create shotgun', ({ pseudo, id }) => {
