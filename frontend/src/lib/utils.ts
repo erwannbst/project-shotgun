@@ -26,5 +26,5 @@ export function addProjectToShotgun(shotgun: Shotgun, projectName: string) {
 
 export const BACKEND_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://project-shotgun-backend.onrender.com:3001'
+    ? 'https://project-shotgun-backend.onrender.com'
     : 'http://localhost:3001'
