@@ -7,6 +7,7 @@ import { Shotgun } from '../../types'
 import { AddProject } from '../../../components/AddProject'
 import { BACKEND_URL } from '../../../lib/utils'
 import { Sidebar } from '../../../components/sidebar/sidebar'
+import { ProjectList } from '@/components/project/project-list'
 export type EmptyDict = { [key: string]: never }
 
 export default function Home() {
@@ -46,7 +47,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-row w-full h-full">
-      <div className="flex flex-col w-10/12 h-full p-20">
+      <div className="flex flex-col w-10/12 h-full p-20 gap-4">
         <header className="flex flex-col ">
           <span className="flex flex-row items-baseline gap-2	">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl h-1/3">
@@ -56,29 +57,9 @@ export default function Home() {
           </span>
           <h2>Créé par {shotgun.author.pseudo}</h2>
         </header>
-        <div className="f">
-          <div
-            className={`flex flex-row gap-4 p-8 min-w-[${
-              50 + 50 * shotgun.projects.length
-            }] w-full`}
-          >
-            {shotgun.projects.map((project) => (
-              <div
-                key={project.id}
-                className="flex flex-col gap-4 p-8 border-slate-700 border-l-2"
-              >
-                <h2>{project.name}</h2>
-                {project.candidates.map((candidate) => (
-                  <div key={candidate.user.id}>{candidate.user.pseudo}</div>
-                ))}
-              </div>
-            ))}
-
-            <AddProject shotgun={shotgun} />
-          </div>
-        </div>
+        <ProjectList shotgun={shotgun} />
       </div>
-      <Sidebar user={shotgun.users[0]} users={shotgun.users} />
+      <Sidebar users={shotgun.users} />
     </div>
   )
 }

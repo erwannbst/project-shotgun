@@ -11,7 +11,6 @@ import { Card, CardContent } from '../ui/card'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 
 export interface SidebarProps {
-  user: User
   users: User[]
 }
 
