@@ -1,10 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-import { io as ClientIO } from "socket.io-client";
+import { io as ClientIO, Socket } from "socket.io-client";
 
 type SocketContextType = {
-  socket: WebSocket | null;
+  socket: Socket | null;
   isConnected: boolean;
 };
 
@@ -16,8 +17,9 @@ const SocketContext = createContext<SocketContextType>({
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState<typeof ClientIO | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const socket = ClientIO(process.env.NEXT_PUBLIC_SITE_URL!, {
@@ -32,6 +34,12 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     socket.on("disconnect", () => {
       setIsConnected(false);
     });
+
+    socket.on("create shotgun", ({ pseudo, id }) => {
+      console.log("create shotgun", pseudo, id);
+      router.push(`/shotgun/${id}`);
+    });
+
     setSocket(socket);
     return () => {
       socket.disconnect();
