@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io as ClientIO, Socket } from 'socket.io-client'
+import { BACKEND_URL } from '../../lib/utils'
 
 type SocketContextType = {
   socket: Socket | null
@@ -23,7 +24,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // server is running on port 3001
-    const socket = ClientIO('http://localhost:3001')
+    const socket = ClientIO(BACKEND_URL)
     console.log('socket', socket)
 
     socket.on('connect', () => {

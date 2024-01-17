@@ -5,6 +5,7 @@ import { useSocket } from '../../../components/providers/socket-provider'
 import { useEffect, useState } from 'react'
 import { Shotgun } from '../../types'
 import { AddProject } from '../../../components/AddProject'
+import { BACKEND_URL } from '../../../lib/utils'
 
 export type EmptyDict = { [key: string]: never }
 
@@ -17,7 +18,7 @@ export default function Home() {
   const [shotgun, setShotgun] = useState<Shotgun | EmptyDict>({})
 
   useEffect(() => {
-    fetch(`http://localhost:3001/shotgun/${id}`)
+    fetch(`${BACKEND_URL}/shotgun/${id}`)
       .then((res) => {
         if (res.status !== 200) router.push('/')
         return res

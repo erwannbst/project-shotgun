@@ -1,13 +1,13 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { Project, Shotgun } from '../app/types'
+import { Shotgun } from '../app/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function addProjectToShotgun(shotgun: Shotgun, projectName: string) {
-  return fetch(`http://localhost:3001/shotguns/${shotgun.id}/projects`, {
+  return fetch(`${BACKEND_URL}/shotguns/${shotgun.id}/projects`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,3 +23,8 @@ export function addProjectToShotgun(shotgun: Shotgun, projectName: string) {
       console.error('Error:', error)
     })
 }
+
+export const BACKEND_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://project-shotgun-backend.onrender.com:3001'
+    : 'http://localhost:3001'
