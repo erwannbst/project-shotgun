@@ -39,6 +39,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       router.push(`/shotgun/${id}`)
     })
 
+    socket.on('join shotgun', ({ pseudo, id }) => {
+      console.log('joining shotgun', pseudo, id)
+      router.push(`/shotgun/${id}`)
+    })
+
     setSocket(socket)
     return () => {
       socket.disconnect()
