@@ -1,6 +1,7 @@
 export type User = {
   id: string
   pseudo: string
+  hasProject: boolean
 }
 
 export type Project = {
