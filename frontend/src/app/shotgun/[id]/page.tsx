@@ -4,11 +4,9 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useSocket } from '../../../components/providers/socket-provider'
 import { useEffect, useState } from 'react'
 import { Shotgun } from '../../types'
-import { Button } from '../../../components/ui/button'
-import { addProjectToShotgun } from '../../../lib/utils'
 import { AddProject } from '../../../components/AddProject'
 
-type EmptyDict = { [key: string]: never }
+export type EmptyDict = { [key: string]: never }
 
 export default function Home() {
   const pathname = usePathname()

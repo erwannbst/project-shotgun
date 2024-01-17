@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 import { Server } from 'socket.io'
 import http from 'http'
 import cors from 'cors'
-import { Shotgun } from './types'
+import { Bagarre, Shotgun } from './types'
 import { generateRoomId } from './utils'
 
 const corsOptions = {
@@ -18,6 +18,8 @@ const io = new Server(server, {
 })
 
 const shotguns: Shotgun[] = []
+
+const bagarres: Bagarre[] = []
 
 io.on('connection', (socket) => {
   console.log('a user connected')
@@ -97,4 +99,16 @@ app.post('/shotguns/:id/projects', (req: Request, res: Response) => {
   shotgun.projects.push(project)
   io.to(shotgun.id).emit('projects', shotgun.projects)
   res.send(project)
+})
+
+// create bagarre
+app.post('/bagarres', (req: Request, res: Response) => {
+  console.log('create bagarre')
+  const bagarre = {
+    id: generateRoomId(),
+    name: req.body.name,
+    candidates: [],
+  }
+  bagarres.push(bagarre)
+  res.send(bagarre)
 })
