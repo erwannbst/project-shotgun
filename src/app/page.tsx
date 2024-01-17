@@ -12,9 +12,8 @@ export default function Home() {
         Project Shotgun
       </h1>
       <div className="gap-4 flex flex-row">
-        <Input type="text" placeholder="Pseudo" />
+        <Input type="text" placeholder="Pseudo" aria-label="pseudo" />
         <Button
-          title="Créer une bagarre"
           onClick={() => {
             router.push('/shotgun/create')
           }}
