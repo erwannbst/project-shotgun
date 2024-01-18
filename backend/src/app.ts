@@ -25,6 +25,17 @@ io.on('connection', (socket) => {
   console.log('a user connected')
 
   socket.on('disconnect', () => {
+    shotguns.forEach((shotgun) => {
+      shotgun.users.forEach((user) => {
+        if (user.id === socket.id) {
+          user.online = false
+        }
+      })
+    })
+    // send updated users list
+    shotguns.forEach((shotgun) => {
+      io.to(shotgun.id).emit('users', shotgun.users)
+    })
     console.log('user disckonnected')
   })
 
@@ -33,15 +44,13 @@ io.on('connection', (socket) => {
     const shotgun: Shotgun = {
       name,
       id: generateRoomId(),
-      author: {
-        id: socket.id,
-        pseudo,
-      },
+      author: socket.id,
       projects: [],
       users: [
         {
           id: socket.id,
           pseudo,
+          online: true,
         },
       ],
     }
@@ -56,7 +65,7 @@ io.on('connection', (socket) => {
     console.log('join shotgun: ' + pseudo + ' ' + id)
     shotguns.forEach((shotgun) => {
       if (shotgun.id === id) {
-        shotgun.users.push({ id: socket.id, pseudo })
+        shotgun.users.push({ id: socket.id, pseudo, online: true })
       }
     })
     socket.join(id)

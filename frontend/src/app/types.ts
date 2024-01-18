@@ -2,6 +2,7 @@ export type User = {
   id: string
   pseudo: string
   hasProject: boolean
+  online: boolean
 }
 
 export type Project = {
@@ -13,11 +14,12 @@ export type Project = {
 export type Candidate = {
   user: User
   timestamp: number
+  valid?: boolean
 }
 
 export type Shotgun = {
   id: string
-  author: User
+  author: string
   name: string
   users: User[]
   projects: Project[]

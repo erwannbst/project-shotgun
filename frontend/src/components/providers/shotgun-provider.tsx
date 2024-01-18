@@ -4,7 +4,7 @@ import { Shotgun } from '../../app/types'
 
 type ShotgunContextType = {
   shotgun: Shotgun | null
-  setShotgun: React.Dispatch<React.SetStateAction<Shotgun | null>>
+  updateShotgun: (shotgun: Shotgun) => void
 }
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const ShotgunContext = createContext<ShotgunContextType>({
   shotgun: null,
-  setShotgun: () => {},
+  updateShotgun: () => {},
 })
 
 // Create the provider component
@@ -21,9 +21,23 @@ const ShotgunProvider = ({ children }: Props) => {
   // Define the state or any other data you want to provide
   const [shotgun, setShotgun] = useState<Shotgun | null>(null)
 
+  const updateShotgun = (shotgun: Shotgun) => {
+    // Set the candidates to valid if there is only one candidate per project
+    shotgun.projects.map((project) =>
+      project.candidates.length === 1
+        ? project.candidates.map((candidate) => {
+            candidate.valid = true
+            return candidate
+          })
+        : project.candidates,
+    )
+
+    setShotgun(shotgun)
+  }
+
   // Provide the state and functions to the children components
   return (
-    <ShotgunContext.Provider value={{ shotgun, setShotgun }}>
+    <ShotgunContext.Provider value={{ shotgun, updateShotgun }}>
       {children}
     </ShotgunContext.Provider>
   )

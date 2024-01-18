@@ -26,7 +26,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'rounded-lg border bg-card text-card-foreground shadow-sm',
+      'flex rounded-lg border bg-card text-card-foreground shadow-sm min-w-[200px]',
       className,
     )}
     {...props}
@@ -99,11 +99,16 @@ type UserCardProps = {
 
 const UserCard = ({ user }: UserCardProps) => (
   <Card key={user.id}>
-    <CardContent className="flex w-full items-center p-2 gap-3">
+    <CardContent
+      className={`flex w-full min-w-20 items-center p-2 gap-3 ${
+        user.online ? '' : 'filter opacity-30'
+      }`}
+    >
       <Avatar>
         <AvatarFallback>{user.pseudo.slice(0, 2)}</AvatarFallback>
       </Avatar>
       <p>{user.pseudo}</p>
+      {user.online && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
     </CardContent>
   </Card>
 )
@@ -113,8 +118,15 @@ type CandidateCardProps = {
 }
 
 const CandidateCard = ({ candidate }: CandidateCardProps) => (
-  <Card key={candidate.user.id}>
-    <CardContent className="flex w-full items-center p-2 gap-3">
+  <Card
+    key={candidate.user.id}
+    className={`${candidate.valid ? 'border-green-500' : ''}`}
+  >
+    <CardContent
+      className={`flex w-full items-center p-2 gap-3 ${
+        candidate.valid ? 'filter opacity-80 bg-green-100' : ''
+      }`}
+    >
       <Avatar>
         <AvatarFallback>{candidate.user.pseudo.slice(0, 2)}</AvatarFallback>
       </Avatar>
@@ -122,11 +134,9 @@ const CandidateCard = ({ candidate }: CandidateCardProps) => (
         <p className="font-bold">{candidate.user.pseudo}</p>
         <p className="text-sm text-slate-800">
           {new Date(candidate.timestamp).toLocaleDateString('fr-FR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
+            second: 'numeric',
           })}
         </p>
       </div>

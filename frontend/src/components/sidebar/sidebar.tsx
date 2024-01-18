@@ -25,7 +25,7 @@ export function Sidebar(props: SidebarProps) {
   })
 
   return (
-    <aside className="h-full w-2/12 border-slate-200 p-2 border-l">
+    <aside className="h-full min-w-2/12 border-slate-200 p-2 border-l">
       <h3 className="font-extrabold tracking-tight">Participants</h3>
       <Select
         defaultValue="progress"

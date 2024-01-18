@@ -8,7 +8,7 @@ type Props = {
 
 export function ProjectList({ shotgun }: Props) {
   return (
-    <div className="flex flex-row w-full h-full overflow-x-auto p-1 justify-items-start gap-2">
+    <div className="flex flex-row w-full h-full overflow-x-auto p-3 justify-items-start gap-2">
       {shotgun.projects.map((project) => (
         <ProjectItem key={project.id} project={project} />
       ))}

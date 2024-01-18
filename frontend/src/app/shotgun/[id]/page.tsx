@@ -16,7 +16,7 @@ export default function Home() {
   const id = pathname?.split('/')[2]
   const router = useRouter()
 
-  const { shotgun, setShotgun } = useShotgun()
+  const { shotgun, updateShotgun } = useShotgun()
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/shotgun/${id}`)
@@ -27,7 +27,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         console.log('data', data)
-        setShotgun(data)
+        updateShotgun(data)
       })
   }, [])
 
@@ -35,27 +35,29 @@ export default function Home() {
 
   socket.on('users', (users) => {
     console.log('users', users)
-    setShotgun({ ...shotgun, users } as Shotgun)
+    updateShotgun({ ...shotgun, users } as Shotgun)
   })
 
   socket.on('projects', (projects) => {
     console.log('projects', projects)
-    setShotgun({ ...shotgun, projects } as Shotgun)
+    updateShotgun({ ...shotgun, projects } as Shotgun)
   })
 
   console.log("Room's id", socket.id)
 
+  const author = shotgun.users.find((user) => user.id === shotgun.author)
+
   return (
-    <div className="flex flex-row w-full h-full">
-      <div className="flex flex-col w-full h-full p-3 lg:p-12 gap-4">
-        <header className="flex flex-col ">
+    <div className="flex flex-row w-[100vw] h-[100vh]">
+      <div className="flex flex-col h-full lg:p-12 gap-4 overflow-auto">
+        <header className="flex flex-col p-3">
           <span className="flex flex-row items-baseline gap-2	">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl h-1/3">
-              Projet recherche
+              {shotgun.name}
             </h1>
             <p className="font-bold text-gray-500">#{id}</p>
           </span>
-          <h2>Créé par {shotgun.author.pseudo}</h2>
+          <h2>Créé par {author?.pseudo}</h2>
         </header>
         <ProjectList shotgun={shotgun} />
       </div>

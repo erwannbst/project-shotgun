@@ -1,6 +1,7 @@
 export type User = {
   id: string
   pseudo: string
+  online: boolean
 }
 
 export type Project = {
@@ -16,7 +17,7 @@ export type Candidate = {
 
 export type Shotgun = {
   id: string
-  author: User
+  author: string
   name: string
   users: User[]
   projects: Project[]
