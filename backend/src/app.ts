@@ -18,7 +18,6 @@ const io = new Server(server, {
 })
 
 const shotguns: Shotgun[] = []
-
 const bagarres: Bagarre[] = []
 
 io.on('connection', (socket) => {
@@ -73,6 +72,24 @@ io.on('connection', (socket) => {
     const users = shotguns.find((shotgun) => shotgun.id === id)?.users
     console.log({ users })
     io.to(id).emit('users', users)
+  })
+
+  // handle bagarre clicking
+  socket.on('click bagarre', ({ id }) => {
+    console.log('click bagarre: ' + id)
+    bagarres.forEach((bagarre) => {
+      if (bagarre.id === id) {
+        bagarre.fighters.forEach((fighter) => {
+          if (fighter.user.id === socket.id) {
+            fighter.score++
+          }
+        })
+      }
+    })
+    io.to(id).emit(
+      'bagarre',
+      bagarres.find((bagarre) => bagarre.id === id),
+    )
   })
 })
 
@@ -144,14 +161,75 @@ app.post(
   },
 )
 
+function joinBagarre(bagarre: Bagarre, userId: string) {
+  const user = shotguns
+    .find((shotgun) => shotgun.users.find((user) => user.id === userId))
+    ?.users.find((user) => user.id === userId)
+
+  // join bagarre socket room
+  const socket = io.sockets.sockets.get(userId)
+  if (socket) {
+    socket.join(bagarre.id)
+  }
+
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  bagarre.fighters.push({ user, score: 0 })
+  return bagarre
+}
+
 // create bagarre
 app.post('/bagarres', (req: Request, res: Response) => {
   console.log('create bagarre')
-  const bagarre = {
+  let bagarre = {
     id: generateRoomId(),
-    name: req.body.name,
-    candidates: [],
+    name: 'req.body.name',
+    fighters: [],
+  } as Bagarre
+
+  bagarre = joinBagarre(bagarre, req.body.user_id as string)
+
+  if (!bagarre) {
+    res.status(404).send('User not found')
+    return
   }
+
   bagarres.push(bagarre)
+  res.send(bagarre)
+})
+
+// get bagarre data from id
+app.get('/bagarres/:id', (req: Request, res: Response) => {
+  console.log('get bagarre: ' + req.params.id)
+  const bagarre = bagarres.find((bagarre) => bagarre.id === req.params.id)
+  if (!bagarre) {
+    res.status(404).send('Bagarre not found')
+    return
+  }
+  res.send(bagarre)
+})
+
+// add fighter to bagarre
+app.post('/bagarres/:id/join', (req: Request, res: Response) => {
+  console.log('add fighter to bagarre: ' + req.params.id)
+  const bagarre = bagarres.find((bagarre) => bagarre.id === req.params.id)
+  if (!bagarre) {
+    res.status(404).send('Bagarre not found')
+    return
+  }
+  const userId = req.body.user_id
+
+  const user = shotguns
+    .find((shotgun) => shotgun.users.find((user) => user.id === userId))
+    ?.users.find((user) => user.id === userId)
+
+  if (!user) {
+    res.status(404).send('User not found')
+    return
+  }
+
+  bagarre.fighters.push({ user, score: 0 })
   res.send(bagarre)
 })

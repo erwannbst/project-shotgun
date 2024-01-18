@@ -23,8 +23,13 @@ export type Shotgun = {
   projects: Project[]
 }
 
+export type Fighter = {
+  user: User
+  score: number
+}
+
 export type Bagarre = {
   id: string
   name: string
-  candidates: (Candidate & { score: number })[]
+  fighters: Fighter[]
 }
