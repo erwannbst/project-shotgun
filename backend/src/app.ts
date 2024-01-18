@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 import { Server } from 'socket.io'
 import http from 'http'
 import cors from 'cors'
-import { Bagarre, Shotgun } from './types'
+import { Bagarre, Candidate, Shotgun } from './types'
 import { generateRoomId } from './utils'
 
 const corsOptions = {
@@ -100,6 +100,40 @@ app.post('/shotguns/:id/projects', (req: Request, res: Response) => {
   io.to(shotgun.id).emit('projects', shotgun.projects)
   res.send(project)
 })
+
+// user subscribe to project
+app.post(
+  '/shotguns/:id/projects/:projectId/subscribe',
+  (req: Request, res: Response) => {
+    console.log(
+      'user subscribe to project: ' +
+        req.params.id +
+        ' ' +
+        req.params.projectId,
+    )
+    const shotgun = shotguns.find((shotgun) => shotgun.id === req.params.id)
+    if (!shotgun) {
+      res.status(404).send('Shotgun not found')
+      return
+    }
+    const project = shotgun.projects.find(
+      (project) => project.id === req.params.projectId,
+    )
+    if (!project) {
+      res.status(404).send('Project not found')
+      return
+    }
+    const userId = req.body.user_id
+    const user = shotgun.users.find((user) => user.id === userId)
+    if (!user) {
+      res.status(404).send('User not found')
+      return
+    }
+    project.candidates.push({ user, timestamp: Date.now() } as Candidate)
+    io.to(shotgun.id).emit('projects', shotgun.projects)
+    res.send(project)
+  },
+)
 
 // create bagarre
 app.post('/bagarres', (req: Request, res: Response) => {

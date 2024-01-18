@@ -7,8 +7,7 @@ import {
   SelectValue,
 } from '../ui/select'
 import { useState } from 'react'
-import { Card, CardContent } from '../ui/card'
-import { Avatar, AvatarFallback } from '../ui/avatar'
+import { UserCard } from '../ui/card'
 
 export interface SidebarProps {
   users: User[]
@@ -42,14 +41,7 @@ export function Sidebar(props: SidebarProps) {
       </Select>
       <div className="body h-full mt-6 flex flex-col gap-2">
         {filteredUsers.map((user) => (
-          <Card key={user.id}>
-            <CardContent className="flex w-full items-center p-2 gap-3">
-              <Avatar>
-                <AvatarFallback>{user.pseudo.slice(0, 2)}</AvatarFallback>
-              </Avatar>
-              <p>{user.pseudo}</p>
-            </CardContent>
-          </Card>
+          <UserCard user={user} />
         ))}
       </div>
     </aside>

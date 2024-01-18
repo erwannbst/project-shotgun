@@ -14,7 +14,9 @@ import {
 
 export default function Home() {
   const { socket } = useSocket()
-  const [pseudo, setPseudo] = useState('')
+  const [pseudo, setPseudo] = useState(
+    process.env.NODE_ENV === 'development' ? 'user' : '',
+  )
   const [code, setCode] = useState('')
   const [shotgunName, setShotgunName] = useState('')
 

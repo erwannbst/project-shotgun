@@ -4,22 +4,22 @@ import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io as ClientIO, Socket } from 'socket.io-client'
 import { BACKEND_URL } from '../../lib/utils'
+import { useUser } from './user-provider'
+import { User } from '../../app/types'
 
 type SocketContextType = {
   socket: Socket | null
-  isConnected: boolean
 }
 
 const SocketContext = createContext<SocketContextType>({
   socket: null,
-  isConnected: false,
 })
 
 export const useSocket = () => useContext(SocketContext)
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null)
-  const [isConnected, setIsConnected] = useState(false)
+  const { user, setUser } = useUser()
   const router = useRouter()
 
   useEffect(() => {
@@ -27,22 +27,21 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const socket = ClientIO(BACKEND_URL)
     console.log('socket', socket)
 
-    socket.on('connect', () => {
-      setIsConnected(true)
-    })
-
     socket.on('disconnect', () => {
-      setIsConnected(false)
       router.push('/')
     })
 
     socket.on('create shotgun', ({ pseudo, id }) => {
+      // a shotgun has been created
       console.log('create shotgun', pseudo, id)
+      setUser({ ...user, pseudo, id: socket.id } as User)
       router.push(`/shotgun/${id}`)
     })
 
     socket.on('join shotgun', ({ pseudo, id }) => {
+      // the user has joined a shotgun
       console.log('joining shotgun', pseudo, id)
+      setUser({ ...user, pseudo, id: socket.id } as User)
       router.push(`/shotgun/${id}`)
     })
 
@@ -53,7 +52,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected }}>
+    <SocketContext.Provider value={{ socket }}>
       {children}
     </SocketContext.Provider>
   )
