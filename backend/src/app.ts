@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
           id: socket.id,
           pseudo,
           online: true,
+          hasProject: false,
         },
       ],
     }
@@ -64,7 +65,12 @@ io.on('connection', (socket) => {
     console.log('join shotgun: ' + pseudo + ' ' + id)
     shotguns.forEach((shotgun) => {
       if (shotgun.id === id) {
-        shotgun.users.push({ id: socket.id, pseudo, online: true })
+        shotgun.users.push({
+          id: socket.id,
+          pseudo,
+          online: true,
+          hasProject: false,
+        })
       }
     })
     socket.join(id)
@@ -99,7 +105,20 @@ io.on('connection', (socket) => {
 
                   if (candidate) {
                     candidate.owner = true
+                    // remove self from other projects
+                    shotgun.projects.forEach((project) => {
+                      project.candidates = project.candidates.filter(
+                        (candidate) => candidate.user.id !== socket.id,
+                      )
+                    })
+                    // remove other candidates from project owned
                     project.candidates = [candidate]
+                    // set user hasProject property to true
+                    shotgun.users.forEach((user) => {
+                      if (user.id === socket.id) {
+                        user.hasProject = true
+                      }
+                    })
                   }
                 }
               }
@@ -175,6 +194,11 @@ app.post(
     const user = shotgun.users.find((user) => user.id === userId)
     if (!user) {
       res.status(404).send('User not found')
+      return
+    }
+    // reject if user already subscribed
+    if (project.candidates.find((candidate) => candidate.user.id === userId)) {
+      res.status(400).send('User already subscribed')
       return
     }
     project.candidates.push({ user, timestamp: Date.now() } as Candidate)

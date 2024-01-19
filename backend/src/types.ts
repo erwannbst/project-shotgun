@@ -2,6 +2,7 @@ export type User = {
   id: string
   pseudo: string
   online: boolean
+  hasProject: boolean
 }
 
 export type Project = {
