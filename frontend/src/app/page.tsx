@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Label } from '../components/ui/label'
 
 export default function Home() {
   const { socket } = useSocket()
@@ -31,22 +32,26 @@ export default function Home() {
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl h-1/3">
         Project Shotgun
       </h1>
-      <div className="flex flex-row flex-wrap  gap-4 p-20 h-2/3 align-center justify-center w-full">
-        <Card className="w-6/12 max-w-2xl min-w-96">
-          <CardHeader>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="pseudo">Pseudo</Label>
+        <Input
+          type="text"
+          placeholder="Pseudo"
+          aria-label="pseudo"
+          value={pseudo}
+          onChange={(e) => setPseudo(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-row flex-wrap gap-4 h-2/3 align-center justify-center w-full">
+        <Card className="w-full max-w-xl min-w-96">
+          <CardHeader className="w-2/3">
             <CardTitle>Créer un nouveau shotgun</CardTitle>
             <CardDescription>
               Le choix de projet n'a jamais été aussi simple (ou presque 🤏)
             </CardDescription>
           </CardHeader>
-          <div className="grid w-full items-center gap-4 p-6">
-            <Input
-              type="text"
-              placeholder="Pseudo"
-              aria-label="pseudo"
-              value={pseudo}
-              onChange={(e) => setPseudo(e.target.value)}
-            />
+          <div className="grid w-1/2 items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Nom du shotgun"
@@ -60,25 +65,18 @@ export default function Home() {
                 createShotgun()
               }}
             >
-              Créer une bagarre
+              Créer un shotgun
             </Button>
           </div>
         </Card>
-        <Card className="w-6/12 max-w-2xl min-w-96">
-          <CardHeader>
+        <Card className="w-full max-w-xl min-w-96">
+          <CardHeader className="w-2/3">
             <CardTitle>Rejoindre un shotgun</CardTitle>
             <CardDescription>
               Prêt à avoir le projet de vos rêves ? (ou pas 🥲)
             </CardDescription>
           </CardHeader>
-          <div className="grid w-full items-center gap-4 p-6">
-            <Input
-              type="text"
-              placeholder="Pseudo"
-              aria-label="pseudo"
-              value={pseudo}
-              onChange={(e) => setPseudo(e.target.value)}
-            />
+          <div className="grid w-1/2 items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Shotgun ID"
@@ -91,7 +89,7 @@ export default function Home() {
                 socket.emit('join shotgun', { pseudo, id: code })
               }}
             >
-              Entrer dans la bagarre
+              Rejoindre un shotgun
             </Button>
           </div>
         </Card>
