@@ -13,7 +13,7 @@ export const Ring = ({ fighter }: Props) => {
   const { bagarre } = useBagarre()
 
   const iAmThisFighter = fighter.user.id === socket?.id
-  const progress = (fighter.score / 10) * 100
+  const progress = (fighter.score / 30) * 100
 
   useEffect(() => {
     if (bagarre?.winner) {

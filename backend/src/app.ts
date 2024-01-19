@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
         bagarre.fighters.forEach((fighter) => {
           if (fighter.user.id === socket.id) {
             fighter.score++
-            if (fighter.score >= 10) {
+            if (fighter.score >= 30) {
               bagarre.winner = fighter
               // set user owner of project
               const shotgun = shotguns.find((shotgun) =>
@@ -94,8 +94,9 @@ io.on('connection', (socket) => {
                 )
                 if (project) {
                   const candidate = project.candidates.find(
-                    (candidate) => candidate.user.id === socket.id,
+                    (candidate) => candidate.user.id === fighter.user.id,
                   )
+
                   if (candidate) {
                     candidate.owner = true
                     project.candidates = [candidate]
