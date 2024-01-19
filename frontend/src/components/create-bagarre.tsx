@@ -1,30 +1,31 @@
 import { useRouter } from 'next/navigation'
 import { BACKEND_URL } from '../lib/utils'
 import { useUser } from './providers/user-provider'
+import { Project } from '../app/types'
+import { Button } from './ui/button'
 
-export const CreateBagarre = () => {
+type Props = {
+  project: Project
+}
+
+export const CreateBagarre = ({ project }: Props) => {
   const { user } = useUser()
-  const router = useRouter()
 
   if (!user) return null
 
   const createBagarre = () => {
     fetch(`${BACKEND_URL}/bagarres`, {
       method: 'POST',
-      body: JSON.stringify({ user_id: user.id }),
+      body: JSON.stringify({ user_id: user.id, project_id: project.id }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => res.json())
-      .then(({ id }) => {
-        router.push(`/bagarre/${id}`)
-      })
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <button onClick={createBagarre}>Create bagarre</button>
+    <div className="flex flex-col items-center justify-center mt-3">
+      <Button onClick={createBagarre}>Départager dans une bagarre</Button>
     </div>
   )
 }

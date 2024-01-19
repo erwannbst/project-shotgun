@@ -22,15 +22,15 @@ const ShotgunProvider = ({ children }: Props) => {
   const [shotgun, setShotgun] = useState<Shotgun | null>(null)
 
   const updateShotgun = (shotgun: Shotgun) => {
-    // Set the candidates to valid if there is only one candidate per project
-    shotgun.projects.map((project) =>
-      project.candidates.length === 1
-        ? project.candidates.map((candidate) => {
-            candidate.valid = true
-            return candidate
-          })
-        : project.candidates,
-    )
+    // Set the candidates to owner if there is only one candidate per project
+    // shotgun.projects.map((project) =>
+    //   project.candidates.length === 1
+    //     ? project.candidates.map((candidate) => {
+    //         candidate.owner = true
+    //         return candidate
+    //       })
+    //     : project.candidates,
+    // )
 
     setShotgun(shotgun)
   }

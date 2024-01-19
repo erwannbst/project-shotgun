@@ -82,6 +82,27 @@ io.on('connection', (socket) => {
         bagarre.fighters.forEach((fighter) => {
           if (fighter.user.id === socket.id) {
             fighter.score++
+            if (fighter.score >= 10) {
+              bagarre.winner = fighter
+              // set user owner of project
+              const shotgun = shotguns.find((shotgun) =>
+                shotgun.users.find((user) => user.id === socket.id),
+              )
+              if (shotgun) {
+                const project = shotgun.projects.find(
+                  (project) => project.id === bagarre.project_id,
+                )
+                if (project) {
+                  const candidate = project.candidates.find(
+                    (candidate) => candidate.user.id === socket.id,
+                  )
+                  if (candidate) {
+                    candidate.owner = true
+                    project.candidates = [candidate]
+                  }
+                }
+              }
+            }
           }
         })
       }
@@ -161,35 +182,41 @@ app.post(
   },
 )
 
-function joinBagarre(bagarre: Bagarre, userId: string) {
-  const user = shotguns
-    .find((shotgun) => shotgun.users.find((user) => user.id === userId))
-    ?.users.find((user) => user.id === userId)
+function joinBagarre(bagarre: Bagarre, candidates: Candidate[]) {
+  candidates.forEach((candidate) => {
+    // join bagarre socket room
+    const socket = io.sockets.sockets.get(candidate.user.id)
+    if (socket) {
+      socket.join(bagarre.id)
+    }
 
-  // join bagarre socket room
-  const socket = io.sockets.sockets.get(userId)
-  if (socket) {
-    socket.join(bagarre.id)
-  }
-
-  if (!user) {
-    throw new Error('User not found')
-  }
-
-  bagarre.fighters.push({ user, score: 0 })
+    bagarre.fighters.push({ user: candidate.user, score: 0 })
+  })
   return bagarre
 }
 
 // create bagarre
 app.post('/bagarres', (req: Request, res: Response) => {
+  const project = shotguns
+    .find((shotgun) =>
+      shotgun.users.find((user) => user.id === req.body.user_id),
+    )
+    ?.projects.find((project) => project.id === req.body.project_id)
+
+  if (!project) {
+    res.status(404).send('Project not found')
+    return
+  }
+
   console.log('create bagarre')
   let bagarre = {
     id: generateRoomId(),
-    name: 'req.body.name',
+    name: 'Bagarre ' + project.name,
+    project_id: project.id,
     fighters: [],
   } as Bagarre
 
-  bagarre = joinBagarre(bagarre, req.body.user_id as string)
+  bagarre = joinBagarre(bagarre, project.candidates as Candidate[])
 
   if (!bagarre) {
     res.status(404).send('User not found')
@@ -197,6 +224,9 @@ app.post('/bagarres', (req: Request, res: Response) => {
   }
 
   bagarres.push(bagarre)
+
+  io.to(bagarre.id).emit('cest lheure de la bagarre', bagarre)
+
   res.send(bagarre)
 })
 

@@ -14,7 +14,7 @@ export type Project = {
 export type Candidate = {
   user: User
   timestamp: number
-  valid?: boolean
+  owner?: boolean
 }
 
 export type Shotgun = {
@@ -34,4 +34,5 @@ export type Bagarre = {
   id: string
   name: string
   fighters: Fighter[]
+  winner?: Fighter
 }

@@ -1,7 +1,6 @@
 import { Shotgun } from '@/app/types'
 import { AddProject } from './add-project'
 import { ProjectItem } from './project'
-import { CreateBagarre } from '../create-bagarre'
 
 type Props = {
   shotgun: Shotgun
@@ -14,7 +13,6 @@ export function ProjectList({ shotgun }: Props) {
         <ProjectItem key={project.id} project={project} />
       ))}
       <AddProject shotgun={shotgun} />
-      <CreateBagarre />
     </div>
   )
 }

@@ -13,6 +13,7 @@ export type Project = {
 export type Candidate = {
   user: User
   timestamp: number
+  owner?: boolean
 }
 
 export type Shotgun = {
@@ -31,5 +32,7 @@ export type Fighter = {
 export type Bagarre = {
   id: string
   name: string
+  project_id: string
   fighters: Fighter[]
+  winner?: Fighter
 }

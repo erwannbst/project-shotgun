@@ -120,11 +120,11 @@ type CandidateCardProps = {
 const CandidateCard = ({ candidate }: CandidateCardProps) => (
   <Card
     key={candidate.user.id}
-    className={`${candidate.valid ? 'border-green-500' : ''}`}
+    className={`${candidate.owner ? 'border-green-500' : ''}`}
   >
     <CardContent
       className={`flex w-full items-center p-2 gap-3 ${
-        candidate.valid ? 'filter opacity-80 bg-green-100' : ''
+        candidate.owner ? 'filter opacity-80 bg-green-100' : ''
       }`}
     >
       <Avatar>

@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { io as ClientIO, Socket } from 'socket.io-client'
 import { BACKEND_URL } from '../../lib/utils'
 import { useUser } from './user-provider'
-import { User } from '../../app/types'
+import { Bagarre, User } from '../../app/types'
 
 type SocketContextType = {
   socket: Socket | null
@@ -43,6 +43,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       console.log('joining shotgun', pseudo, id)
       setUser({ ...user, pseudo, id: socket.id } as User)
       router.push(`/shotgun/${id}`)
+    })
+
+    socket.on('cest lheure de la bagarre', (bagarre: Bagarre) => {
+      console.log('cest lheure de la bagarre', bagarre)
+      router.push(`/bagarre/${bagarre.id}`)
     })
 
     setSocket(socket)
