@@ -65,13 +65,6 @@ export function ProjectItem(props: ProjectProps) {
             shotgun={shotgun}
             project={props.project}
             candidate={props.project.candidates[0]}
-            lastChange={
-              new Date(
-                props.project.candidates[
-                  props.project.candidates.length - 1
-                ].timestamp,
-              )
-            }
           />
         )}
         {iAmCandidateOfThisProject && props.project.candidates.length > 1 && (
