@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import {
@@ -22,10 +21,11 @@ type Props = {
 }
 
 export function AddProject({ shotgun }: Props) {
+  const [open, setOpen] = useState(false)
   const [projectName, setProjectName] = useState('')
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <GreyCard className="my-0 h-full gap-2">
           <svg
@@ -49,7 +49,7 @@ export function AddProject({ shotgun }: Props) {
         <DialogHeader>
           <DialogTitle>Ajouter un nouveau projet</DialogTitle>
           <DialogDescription>
-            Donner un nom de projet à ajouter au shotgun. (vérifier bien que le
+            Donnez un nom de projet à ajouter au shotgun. (vérifier bien que le
             projet n'existe pas déjà 😏)
           </DialogDescription>
         </DialogHeader>
@@ -63,6 +63,12 @@ export function AddProject({ shotgun }: Props) {
             value={projectName}
             aria-label="nom du projet"
             className="col-span-3"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                addProjectToShotgun(shotgun, projectName)
+                setOpen(false)
+              }
+            }}
             onChange={(e) => setProjectName(e.target.value)}
           />
         </div>

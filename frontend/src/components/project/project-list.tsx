@@ -1,6 +1,7 @@
 import { Shotgun } from '@/app/types'
 import { AddProject } from './add-project'
 import { ProjectItem } from './project'
+import { LockProjectRequestModal } from './lock-project-request-modal'
 
 type Props = {
   shotgun: Shotgun
@@ -13,6 +14,7 @@ export function ProjectList({ shotgun }: Props) {
         <ProjectItem key={project.id} project={project} />
       ))}
       <AddProject shotgun={shotgun} />
+      <LockProjectRequestModal />
     </div>
   )
 }

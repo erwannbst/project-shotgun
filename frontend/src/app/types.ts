@@ -9,6 +9,7 @@ export type Project = {
   id: string
   name: string
   candidates: Candidate[]
+  lockRequestResponses?: Record<User['id'], boolean>
 }
 
 export type Candidate = {

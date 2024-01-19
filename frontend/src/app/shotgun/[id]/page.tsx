@@ -19,7 +19,8 @@ export default function Home() {
   const { shotgun, updateShotgun } = useShotgun()
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/shotgun/${id}`)
+    // fetch shotgun by giving socket id in query
+    fetch(`${BACKEND_URL}/shotgun/${id}?socketId=${socket?.id}`)
       .then((res) => {
         if (res.status !== 200) router.push('/')
         return res

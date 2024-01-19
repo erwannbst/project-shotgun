@@ -28,7 +28,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-16 p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-16 p-24 overflow-y-auto">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl h-1/3">
         Project Shotgun
       </h1>
@@ -44,14 +44,14 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-row flex-wrap gap-4 h-2/3 align-center justify-center w-full">
-        <Card className="w-full max-w-xl min-w-96">
-          <CardHeader className="w-2/3">
+        <Card className="w-full max-w-xl min-w-96 flex-col md:flex-row">
+          <CardHeader className="md:w-2/3">
             <CardTitle>Créer un nouveau shotgun</CardTitle>
             <CardDescription>
               Le choix de projet n'a jamais été aussi simple (ou presque 🤏)
             </CardDescription>
           </CardHeader>
-          <div className="grid w-1/2 items-center gap-4 p-6">
+          <div className="grid md:w-1/3 items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Nom du shotgun"
@@ -69,14 +69,14 @@ export default function Home() {
             </Button>
           </div>
         </Card>
-        <Card className="w-full max-w-xl min-w-96">
-          <CardHeader className="w-2/3">
+        <Card className="w-full max-w-xl min-w-96 flex-col md:flex-row">
+          <CardHeader className="md:w-2/3">
             <CardTitle>Rejoindre un shotgun</CardTitle>
             <CardDescription>
               Prêt à avoir le projet de vos rêves ? (ou pas 🥲)
             </CardDescription>
           </CardHeader>
-          <div className="grid w-1/2 items-center gap-4 p-6">
+          <div className="grid md:w-1/3 items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Shotgun ID"

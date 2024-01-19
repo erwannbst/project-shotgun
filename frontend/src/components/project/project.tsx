@@ -4,6 +4,7 @@ import { useUser } from '../providers/user-provider'
 import { SubscribeProject } from './subscribe-projects'
 import { CandidateCard } from '../ui/card'
 import { CreateBagarre } from '../create-bagarre'
+import { RequestLock } from '../request-lock'
 
 export interface ProjectProps {
   project: Project
@@ -11,6 +12,11 @@ export interface ProjectProps {
 
 export function ProjectItem(props: ProjectProps) {
   const { user } = useUser()
+  const { shotgun } = useShotgun()
+
+  if (!user) return null
+  if (!shotgun) return null
+
   const iAmCandidateOfThisProject = props.project.candidates.some(
     (candidate) => candidate.user.id === user?.id,
   )
@@ -18,6 +24,11 @@ export function ProjectItem(props: ProjectProps) {
   const projectIsOwned = props.project.candidates.some(
     (candidate) => candidate.owner,
   )
+
+  const canRequestLock =
+    iAmCandidateOfThisProject &&
+    props.project.candidates.length === 1 &&
+    !projectIsOwned
 
   return (
     <div className="h-full relative min-w-80 border-slate-200 border">
@@ -48,6 +59,20 @@ export function ProjectItem(props: ProjectProps) {
         ))}
         {!iAmCandidateOfThisProject && (
           <SubscribeProject project={props.project} />
+        )}
+        {canRequestLock && (
+          <RequestLock
+            shotgun={shotgun}
+            project={props.project}
+            candidate={props.project.candidates[0]}
+            lastChange={
+              new Date(
+                props.project.candidates[
+                  props.project.candidates.length - 1
+                ].timestamp,
+              )
+            }
+          />
         )}
         {iAmCandidateOfThisProject && props.project.candidates.length > 1 && (
           <CreateBagarre project={props.project} />

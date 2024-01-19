@@ -52,7 +52,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     setSocket(socket)
     return () => {
-      socket.disconnect()
+      if (socket.active) {
+        socket.disconnect()
+      }
     }
   }, [])
 
