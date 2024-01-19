@@ -49,8 +49,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-row w-[100vw] h-[100vh]">
-      <div className="flex flex-col h-full lg:p-12 gap-4 overflow-auto">
-        <header className="flex flex-col p-3">
+      <div className="flex flex-col h-full w-full gap-4 overflow-auto">
+        <header className="flex flex-col p-3 lg:p-12">
           <span className="flex flex-row items-baseline gap-2	">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl h-1/3">
               {shotgun.name}
