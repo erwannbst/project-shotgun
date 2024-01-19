@@ -39,7 +39,7 @@ export default function Home() {
               Le choix de projet n'a jamais été aussi simple (ou presque 🤏)
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid w-full items-center gap-4">
+          <div className="grid w-full items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Pseudo"
@@ -62,7 +62,7 @@ export default function Home() {
             >
               Créer une bagarre
             </Button>
-          </CardContent>
+          </div>
         </Card>
         <Card className="w-6/12 max-w-2xl min-w-96">
           <CardHeader>
@@ -71,7 +71,7 @@ export default function Home() {
               Prêt à avoir le projet de vos rêves ? (ou pas 🥲)
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid w-full items-center gap-4">
+          <div className="grid w-full items-center gap-4 p-6">
             <Input
               type="text"
               placeholder="Pseudo"
@@ -93,7 +93,7 @@ export default function Home() {
             >
               Entrer dans la bagarre
             </Button>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </main>
