@@ -27,10 +27,10 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-1 h-full w-full ">
-      <div className="flex flex-1 h-full bg-[url('/background.png')] bg-contain bg-no-repeat bg-center"></div>
-      <div className="flex flex-1 flex-col px-24 items-end gap-16 min-h-screen justify-center">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <main className="flex flex-1 h-full w-full flex-col md:flex-row md:px-8">
+      <div className="flex flex-1 h-full min-h-[400px] bg-[url('/background.png')] bg-contain bg-no-repeat bg-center"></div>
+      <div className="flex flex-1 flex-col items-center md:items-end gap-16 min-h-screen justify-center">
+        <h1 className="md:scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Project Shotgun
         </h1>
 
