@@ -3,11 +3,12 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { useSocket } from '../../../components/providers/socket-provider'
 import { useEffect } from 'react'
-import { Shotgun } from '../../types'
+import { Shotgun, User } from '../../types'
 import { BACKEND_URL } from '../../../lib/utils'
 import { Sidebar } from '../../../components/sidebar/sidebar'
 import { ProjectList } from '@/components/project/project-list'
 import { useShotgun } from '../../../components/providers/shotgun-provider'
+import { useUser } from '../../../components/providers/user-provider'
 export type EmptyDict = { [key: string]: never }
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
   const { socket } = useSocket()
   const id = pathname?.split('/')[2]
   const router = useRouter()
+  const { setUser } = useUser()
 
   const { shotgun, updateShotgun } = useShotgun()
 
@@ -34,9 +36,10 @@ export default function Home() {
 
   if (!socket || shotgun == null) return <h1>Chargement...</h1>
 
-  socket.on('users', (users) => {
+  socket.on('users', (users: User[]) => {
     console.log('users', users)
     updateShotgun({ ...shotgun, users } as Shotgun)
+    setUser(users.find((user) => user.id === socket.id)!)
   })
 
   socket.on('projects', (projects) => {
@@ -47,6 +50,8 @@ export default function Home() {
   console.log("Room's id", socket.id)
 
   const author = shotgun.users.find((user) => user.id === shotgun.author)
+
+  console.log({ shotgun })
 
   return (
     <div className="flex flex-row w-[100vw] h-[100vh]">

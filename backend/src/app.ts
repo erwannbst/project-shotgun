@@ -278,6 +278,7 @@ function attributeProjectToCandidate(project_id: string, user_id: string) {
     }
   })
   io.to(shotgun.id).emit('projects', shotgun.projects)
+  io.to(shotgun.id).emit('users', shotgun.users)
 }
 
 // user request to lock a project he is the only candidate of

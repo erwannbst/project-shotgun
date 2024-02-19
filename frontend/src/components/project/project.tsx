@@ -57,7 +57,7 @@ export function ProjectItem(props: ProjectProps) {
         {props.project.candidates.map((candidate) => (
           <CandidateCard candidate={candidate} />
         ))}
-        {!iAmCandidateOfThisProject && (
+        {!iAmCandidateOfThisProject && !user.hasProject && (
           <SubscribeProject project={props.project} />
         )}
         {canRequestLock && (

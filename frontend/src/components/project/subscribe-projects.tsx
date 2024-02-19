@@ -25,6 +25,8 @@ export function SubscribeProject({ project }: Props) {
     )
   }
 
+  if (user?.hasProject) return null
+
   return (
     <GreyCard onClick={subscribe}>
       {/* Radix add icon */}
