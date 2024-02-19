@@ -22,6 +22,8 @@ export function Sidebar(props: SidebarProps) {
       return !user.hasProject
     } else if (filter === 'finished') {
       return user.hasProject
+    } else {
+      return true
     }
   })
 
@@ -90,6 +92,7 @@ export function Sidebar(props: SidebarProps) {
           <SelectContent>
             <SelectItem value="progress">en cours</SelectItem>
             <SelectItem value="finished">validé</SelectItem>
+            <SelectItem value="all">tous</SelectItem>
           </SelectContent>
         </Select>
       </div>
