@@ -46,7 +46,9 @@ export function LockProjectRequestModal() {
 
   // show modal if project and if everyone has not yet responded
   const canClose =
-    !!project && projectResponses.length == shotgun.users.length - 1
+    !!project &&
+    projectResponses.length ==
+      shotgun.users.filter((user) => user.online).length - 1
 
   const iHaveInitiatedTheLockRequest =
     project?.candidates[0].user.id === socket?.id
@@ -79,7 +81,9 @@ export function LockProjectRequestModal() {
           <DialogDescription>{description}</DialogDescription>
           <Progress
             value={
-              (projectResponses.length / (shotgun.users.length - 1)) * 100 || 1
+              (projectResponses.length /
+                (shotgun.users.filter((user) => user.online).length - 1)) *
+                100 || 1
             }
             max={shotgun.projects.length}
             indicatorColor={

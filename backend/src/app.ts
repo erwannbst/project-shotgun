@@ -3,7 +3,7 @@ import { Server } from 'socket.io'
 import http from 'http'
 import cors from 'cors'
 import { Bagarre, Candidate, Shotgun } from './types'
-import { generateRoomId } from './utils'
+import { filterOnline, generateRoomId } from './utils'
 
 const corsOptions = {
   origin: '*',
@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
     if (
       project.lockRequestResponses &&
       Object.keys(project.lockRequestResponses).length ===
-        shotgun.users.length - 1
+        shotgun.users.filter(filterOnline).length - 1
     ) {
       // the user that initiated the lock request is the only one not to have voted
       const allUsers = shotgun.users.map((user) => user.id)
