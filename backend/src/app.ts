@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
         bagarre.fighters.forEach((fighter) => {
           if (fighter.user.id === socket.id) {
             fighter.score++
-            if (fighter.score >= 30) {
+            if (fighter.score >= 150) {
               bagarre.winner = fighter
               // set user owner of project
               attributeProjectToCandidate(bagarre.project_id, fighter.user.id)
